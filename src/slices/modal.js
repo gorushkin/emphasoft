@@ -1,16 +1,17 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Modal } from 'bootstrap';
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: Modal,
+  name: 'modals',
   initialState: {
-    currentModalName: null,
-    show: false,
+    type: null,
   },
   reducers: {
-    changeState(state, action) {
-      console.log(action);
-    }
+    showModal(state, { payload }) {
+      state.type = payload;
+    },
+    hideModal(state) {
+      state.type = null;
+    },
   },
 });
 

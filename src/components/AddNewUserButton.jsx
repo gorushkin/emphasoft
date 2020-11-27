@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { actions } from '../slices';
 
 const CreateUserForm = () => {
-  const { modals } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   const clickHandler = () => {
-    console.log('oprn form');
+    dispatch(actions.showModal('adding'));
   };
 
   return (

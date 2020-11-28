@@ -14,11 +14,11 @@ const AddUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: 'qweddssssddd',
+      username: '',
       first_name: '',
       last_name: '',
-      password: 'AAAAAAAA555',
-      passwordRepeat: 'AAAAAAAA555',
+      password: '',
+      passwordRepeat: '',
       is_active: true,
     },
     validateOnChange: false,

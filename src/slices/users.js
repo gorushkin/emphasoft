@@ -32,7 +32,25 @@ const addUser = createAsyncThunk(
       const user = response.data;
       return user;
     } catch (error) {
-      console.log(error.response.data);
+      const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
+      return rejectWithValue();
+    }
+  }
+);
+
+const removeUser = createAsyncThunk(
+  'users/removeUser',
+  async ({ id }, { rejectWithValue, dispatch }) => {
+    const url = routes.user(id);
+    try {
+      const token = `Token ${localStorage.getItem('token')}`;
+      await axios.delete(
+        url,
+        { headers: { Authorization: token } }
+      );
+      return id;
+    } catch (error) {
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
       dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
       return rejectWithValue();
@@ -54,7 +72,6 @@ const editUser = createAsyncThunk(
       const user = response.data;
       return user;
     } catch (error) {
-      console.log(error.response.data);
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
       console.log('errorMsg: ', errorMsg);
       dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
@@ -97,11 +114,15 @@ const slice = createSlice({
     [addUser.fulfilled]: (state, { payload }) => {
       state.users.push(payload);
     },
+    [removeUser.fulfilled]: (state, { payload }) => {
+      console.log('payload: ', payload);
+      state.users = state.users.filter((item) => item.id !== payload);
+    },
     [editUser.fulfilled]: (state, { payload }) => {
       state.users = state.users.map((item) => {
-        if (item.id !== payload.id ) return item;
+        if (item.id !== payload.id) return item;
         return payload;
-      })
+      });
     },
     [addUser.rejected]: (state, action) => {
       return state;
@@ -113,6 +134,6 @@ const slice = createSlice({
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { getUsers, addUser, editUser };
+const asyncActions = { getUsers, addUser, editUser, removeUser };
 export { actions, asyncActions };
 export default slice.reducer;

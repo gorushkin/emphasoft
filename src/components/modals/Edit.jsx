@@ -7,6 +7,7 @@ import validationSchema from './userValidator';
 
 const EditUser = () => {
   const dispatch = useDispatch();
+
   const {
     data: { id, username, last_name, first_name },
   } = useSelector((state) => state.modals);
@@ -20,8 +21,8 @@ const EditUser = () => {
       username: username,
       first_name: first_name,
       last_name: last_name,
-      password: 'AAAAAAAA555',
-      passwordRepeat: 'AAAAAAAA555',
+      password: '',
+      passwordRepeat: '',
       is_active: true,
     },
     validateOnChange: false,

@@ -10,7 +10,7 @@ const CreateUserForm = () => {
   };
 
   return (
-    <div className='row d-flex justify-content-end mb-3'>
+    <div className='adduserbtn row d-flex justify-content-end'>
       <button onClick={clickHandler} type='submit' className='btn btn-lg btn-primary px-sm-5'>
         Add newuser
       </button>

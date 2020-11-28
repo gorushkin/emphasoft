@@ -25,7 +25,7 @@ const UserList = () => {
 
   return (
     <div className='row'>
-      <table className='col table pt-5 table-striped table-hover'>
+      <table className='col table table-striped table-hover table-responsive-md'>
         <thead className='table-primary'>
           <tr>
             <th className='sort' scope='col'>

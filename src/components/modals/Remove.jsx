@@ -15,7 +15,6 @@ const RemoveUser = () => {
   } = useSelector((state) => state.modals);
 
   const removeUserHandler = () => {
-    console.log('we will remove this user');
     dispatch(asyncActions.removeUser({ id }));
     dispatch(actions.hideModal());
   };

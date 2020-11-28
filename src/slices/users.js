@@ -29,8 +29,7 @@ const addUser = createAsyncThunk(
         { username, first_name, last_name, password, is_active },
         { headers: { Authorization: token } }
       );
-      const user = response.data;
-      return user;
+      return response.data;
     } catch (error) {
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
       dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
@@ -69,11 +68,9 @@ const editUser = createAsyncThunk(
         { username, first_name, last_name, password },
         { headers: { Authorization: token } }
       );
-      const user = response.data;
-      return user;
+      return response.data;;
     } catch (error) {
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
-      console.log('errorMsg: ', errorMsg);
       dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
       return rejectWithValue();
     }
@@ -115,7 +112,6 @@ const slice = createSlice({
       state.users.push(payload);
     },
     [removeUser.fulfilled]: (state, { payload }) => {
-      console.log('payload: ', payload);
       state.users = state.users.filter((item) => item.id !== payload);
     },
     [editUser.fulfilled]: (state, { payload }) => {

@@ -21,10 +21,12 @@ const AuthForm = () => {
     dispatch(asyncActions.getUsers());
   }, []);
 
+
+
   return (
     <div className='container'>
       <h1>Список пользователей</h1>
-      <AddNewUserButton/>
+      <AddNewUserButton />
       {renderModal(type)}
       <UserList />
     </div>

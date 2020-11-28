@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
+import { actions as errorActions } from './error';
 
 const getUsers = createAsyncThunk('users/getUsers', async () => {
   const url = routes.users();
@@ -16,7 +17,7 @@ const getUsers = createAsyncThunk('users/getUsers', async () => {
 
 const addUser = createAsyncThunk(
   'users/addUser',
-  async ({ username, first_name, last_name, password, is_active }) => {
+  async ({ username, first_name, last_name, password, is_active }, { rejectWithValue, dispatch }) => {
     const url = routes.users();
     try {
       const token = `Token ${localStorage.getItem('token')}`;
@@ -28,7 +29,11 @@ const addUser = createAsyncThunk(
       const user = response.data;
       return user;
     } catch (error) {
-      console.log(error.response.data.non_field_errors.join(''));
+      console.log(error.response.data);
+      const newError = Object.values(error.response.data).join('');
+      const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
+      return rejectWithValue();
     }
   }
 );
@@ -69,6 +74,10 @@ const slice = createSlice({
       console.log(payload);
       state.users.push(payload)
     },
+    [addUser.rejected]: (state, action) => {
+      return state;
+    }
+
   },
 });
 

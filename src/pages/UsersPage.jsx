@@ -4,7 +4,7 @@ import AddNewUserButton from '../components/AddNewUserButton';
 import UserList from '../components/UserList';
 import { asyncActions } from '../slices';
 import getModals from '../components/modals';
-
+import Alert from '../components/Alert';
 const renderModal = (type) => {
   if (!type) {
     return null;
@@ -21,10 +21,9 @@ const AuthForm = () => {
     dispatch(asyncActions.getUsers());
   }, []);
 
-
-
   return (
     <div className='container'>
+      <Alert />
       <h1>Список пользователей</h1>
       <AddNewUserButton />
       {renderModal(type)}

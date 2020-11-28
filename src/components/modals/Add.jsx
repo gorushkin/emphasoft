@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actions, asyncActions } from '../../slices';
 import { useFormik } from 'formik';
 import validationSchema from './userValidator';
@@ -14,12 +14,12 @@ const AddUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: '',
+      username: 'qweddssssddd',
       first_name: '',
       last_name: '',
-      password: '',
-      passwordRepeat: '',
-      is_active: false,
+      password: 'AAAAAAAA555',
+      passwordRepeat: 'AAAAAAAA555',
+      is_active: true,
     },
     validateOnChange: false,
     validationSchema: validationSchema,

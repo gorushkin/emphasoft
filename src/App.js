@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
 const App = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  console.log(user);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {

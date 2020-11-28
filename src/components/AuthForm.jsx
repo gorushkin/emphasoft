@@ -24,8 +24,6 @@ const AuthForm = () => {
         <input
           type='text'
           className='form-control'
-          id='exampleInputEmail1'
-          aria-describedby='emailHelp'
           onChange={onChangeHandler}
           value={form.login}
           name='username'
@@ -40,7 +38,6 @@ const AuthForm = () => {
           onChange={onChangeHandler}
           type='password'
           className='form-control'
-          id='exampleInputPassword1'
           name='password'
           value={form.password}
         />

@@ -1,20 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
+import { actions as errorActions } from './error';
 
-const userLogin = createAsyncThunk('user/login', async ({ username, password }) => {
-  const url = routes.login();
-  try {
-    const response = await axios.post(url, { username, password });
-    const {
-      data: { token },
-    } = response;
-    localStorage.setItem('token', token);
-    return { isGuest: false };
-  } catch (error) {
-    console.log(error.response.data.non_field_errors.join(''));
+const userLogin = createAsyncThunk(
+  'user/login',
+  async ({ username, password }, { rejectWithValue, dispatch }) => {
+    const url = routes.login();
+    try {
+      const response = await axios.post(url, { username, password });
+      const {
+        data: { token },
+      } = response;
+      localStorage.setItem('token', token);
+      return { isGuest: false };
+    } catch (error) {
+      const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
+      return rejectWithValue();
+    }
   }
-});
+);
 
 const slice = createSlice({
   name: 'user',
@@ -22,13 +28,16 @@ const slice = createSlice({
     user: { isGuest: true },
   },
   reducers: {
-    userInit(state, {payload}) {
+    userInit(state, { payload }) {
       state.user = payload;
     },
   },
   extraReducers: {
-    [userLogin.fulfilled]: (state, {payload}) => {
+    [userLogin.fulfilled]: (state, { payload }) => {
       state.user = payload;
+    },
+    [userLogin.rejected]: (state) => {
+      state.user = { isGuest: true };
     },
   },
 });

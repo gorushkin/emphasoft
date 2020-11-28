@@ -14,12 +14,12 @@ const AddUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: '',
-      firstame: '',
-      lastname: '',
-      password: '',
-      passwordRepeat: '',
-      isActive: false,
+      username: 'qweddssssddd',
+      first_name: '',
+      last_name: '',
+      password: 'AAAAAAAA555',
+      passwordRepeat: 'AAAAAAAA555',
+      is_active: true,
     },
     validateOnChange: false,
     validationSchema: validationSchema,
@@ -54,22 +54,20 @@ const AddUser = () => {
             <Form.Label>Firstname</Form.Label>
             <Form.Control
               onChange={formik.handleChange}
-              name='firstame'
+              name='first_name'
               className='mb-2'
               type='text'
-
-              value={formik.values.firstame}
+              value={formik.values.first_name}
             />
           </Form.Group>
           <Form.Group>
             <Form.Label>Lastname</Form.Label>
             <Form.Control
               onChange={formik.handleChange}
-              name='lastname'
+              name='last_name'
               className='mb-2'
               type='text'
-
-              value={formik.values.lastname}
+              value={formik.values.last_name}
             />
           </Form.Group>
           <Form.Group>
@@ -103,13 +101,13 @@ const AddUser = () => {
           <Form.Group onChange={formik.handleChange} controlId='formBasicCheckbox'>
             <Form.Check
               onChange={formik.handleChange}
-              name='isActive'
+              name='is_active'
               type='checkbox'
               label='Is active'
-              checked={formik.values.isActive}
+              checked={formik.values.is_active}
             />
-            {formik.errors.isActive ? (
-              <div className='d-block mb-2 invalid-feedback'>{formik.errors.isActive}</div>
+            {formik.errors.is_active ? (
+              <div className='d-block mb-2 invalid-feedback'>{formik.errors.is_active}</div>
             ) : null}
           </Form.Group>
 

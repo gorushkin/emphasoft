@@ -7,32 +7,46 @@ const getUsers = createAsyncThunk('users/getUsers', async () => {
   try {
     const token = `Token ${localStorage.getItem('token')}`;
     const response = await axios.get(url, { headers: { Authorization: token } });
-    const {data} = response;
-    return data
+    const { data } = response;
+    return data;
   } catch (error) {
     console.log(error.response.data.non_field_errors.join(''));
   }
 });
 
-const addUser = createAsyncThunk('users/addUser', async (data) => {
-  console.log(data);
-})
-
+const addUser = createAsyncThunk(
+  'users/addUser',
+  async ({ username, first_name, last_name, password, is_active }) => {
+    const url = routes.users();
+    try {
+      const token = `Token ${localStorage.getItem('token')}`;
+      const response = await axios.post(
+        url,
+        { username, first_name, last_name, password, is_active },
+        { headers: { Authorization: token } }
+      );
+      const user = response.data;
+      return user;
+    } catch (error) {
+      console.log(error.response.data.non_field_errors.join(''));
+    }
+  }
+);
 
 const sortMatch = {
   username: (a, b) => {
     if (a.username.toLowerCase() < b.username.toLowerCase()) {
-      return -1
+      return -1;
     }
     return 1;
   },
   id: (a, b) => {
     if (a.id < b.id) {
-      return -1
+      return -1;
     }
     return 1;
   },
-}
+};
 
 const slice = createSlice({
   name: 'users',
@@ -41,19 +55,24 @@ const slice = createSlice({
     sortDirections: 'up',
   },
   reducers: {
-    setSortBy(state, {payload}) {
+    setSortBy(state, { payload }) {
       state.sortBy = payload;
       state.users = state.users.sort(sortMatch[payload]);
     },
+
   },
   extraReducers: {
-    [getUsers.fulfilled]: (state, {payload}) => {
+    [getUsers.fulfilled]: (state, { payload }) => {
       state.users = payload;
+    },
+    [addUser.fulfilled]: (state, { payload }) => {
+      console.log(payload);
+      state.users.push(payload)
     },
   },
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { getUsers , addUser};
+const asyncActions = { getUsers, addUser };
 export { actions, asyncActions };
 export default slice.reducer;

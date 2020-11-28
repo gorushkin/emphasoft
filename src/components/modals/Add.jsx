@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions } from '../../slices';
+import { actions, asyncActions } from '../../slices';
 import { useFormik } from 'formik';
 import validationSchema from './userValidator';
 
@@ -24,7 +24,7 @@ const AddUser = () => {
     validateOnChange: false,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(asyncActions.addUser(values))
       dispatch(actions.hideModal());
     },
   });
@@ -42,6 +42,7 @@ const AddUser = () => {
               onChange={formik.handleChange}
               name='username'
               className='mb-2'
+              type='text'
               value={formik.values.username}
               isInvalid={!!formik.errors.username}
             />
@@ -55,6 +56,8 @@ const AddUser = () => {
               onChange={formik.handleChange}
               name='firstame'
               className='mb-2'
+              type='text'
+
               value={formik.values.firstame}
             />
           </Form.Group>
@@ -64,6 +67,8 @@ const AddUser = () => {
               onChange={formik.handleChange}
               name='lastname'
               className='mb-2'
+              type='text'
+
               value={formik.values.lastname}
             />
           </Form.Group>
@@ -72,6 +77,7 @@ const AddUser = () => {
             <Form.Control
               onChange={formik.handleChange}
               name='password'
+              type='password'
               className='mb-2'
               value={formik.values.password}
               isInvalid={!!formik.errors.password}
@@ -86,6 +92,7 @@ const AddUser = () => {
               onChange={formik.handleChange}
               name='passwordRepeat'
               className='mb-2'
+              type='password'
               value={formik.values.passwordRepeat}
               isInvalid={!!formik.errors.passwordRepeat}
             />

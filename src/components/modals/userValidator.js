@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const schema = (values) =>
+const schema = () =>
   yup.object({
     username: yup
       .string()
@@ -11,7 +11,8 @@ const schema = (values) =>
       .string()
       .required('This field is required')
       .min(1, 'The password is too short')
-      .max(128, 'The password is too long'),
+      .max(128, 'The password is too long')
+      .matches(/^(?=.*[A-Z])(?=.*\d).{8,}$/ , 'Is not in correct format'),
     passwordRepeat: yup
       .string()
       .required('This field is required')

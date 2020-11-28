@@ -14,6 +14,10 @@ const getUsers = createAsyncThunk('users/getUsers', async () => {
   }
 });
 
+const addUser = createAsyncThunk('users/addUser', async (data) => {
+  console.log(data);
+})
+
 
 const sortMatch = {
   username: (a, b) => {
@@ -50,6 +54,6 @@ const slice = createSlice({
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { getUsers };
+const asyncActions = { getUsers , addUser};
 export { actions, asyncActions };
 export default slice.reducer;

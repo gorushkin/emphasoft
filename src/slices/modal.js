@@ -4,10 +4,14 @@ const slice = createSlice({
   name: 'modals',
   initialState: {
     type: null,
+    data: null,
   },
   reducers: {
-    showModal(state, { payload }) {
-      state.type = payload;
+    showModal(state, { payload: { type, data } }) {
+      state.type = type;
+      if (data) {
+        state.data = data;
+      }
     },
     hideModal(state) {
       state.type = null;

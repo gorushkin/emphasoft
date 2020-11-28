@@ -6,7 +6,7 @@ const CreateUserForm = () => {
   const dispatch = useDispatch();
 
   const clickHandler = () => {
-    dispatch(actions.showModal('adding'));
+    dispatch(actions.showModal({type: 'add'}));
   };
 
   return (

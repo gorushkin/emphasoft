@@ -17,7 +17,10 @@ const getUsers = createAsyncThunk('users/getUsers', async () => {
 
 const addUser = createAsyncThunk(
   'users/addUser',
-  async ({ username, first_name, last_name, password, is_active }, { rejectWithValue, dispatch }) => {
+  async (
+    { username, first_name, last_name, password, is_active },
+    { rejectWithValue, dispatch }
+  ) => {
     const url = routes.users();
     try {
       const token = `Token ${localStorage.getItem('token')}`;
@@ -30,8 +33,30 @@ const addUser = createAsyncThunk(
       return user;
     } catch (error) {
       console.log(error.response.data);
-      const newError = Object.values(error.response.data).join('');
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
+      return rejectWithValue();
+    }
+  }
+);
+
+const editUser = createAsyncThunk(
+  'users/editUser',
+  async ({ id, username, first_name, last_name, password }, { rejectWithValue, dispatch }) => {
+    const url = routes.user(id);
+    try {
+      const token = `Token ${localStorage.getItem('token')}`;
+      const response = await axios.patch(
+        url,
+        { username, first_name, last_name, password },
+        { headers: { Authorization: token } }
+      );
+      const user = response.data;
+      return user;
+    } catch (error) {
+      console.log(error.response.data);
+      const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
+      console.log('errorMsg: ', errorMsg);
       dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
       return rejectWithValue();
     }
@@ -64,24 +89,30 @@ const slice = createSlice({
       state.sortBy = payload;
       state.users = state.users.sort(sortMatch[payload]);
     },
-
   },
   extraReducers: {
     [getUsers.fulfilled]: (state, { payload }) => {
       state.users = payload;
     },
     [addUser.fulfilled]: (state, { payload }) => {
-      console.log(payload);
-      state.users.push(payload)
+      state.users.push(payload);
+    },
+    [editUser.fulfilled]: (state, { payload }) => {
+      state.users = state.users.map((item) => {
+        if (item.id !== payload.id ) return item;
+        return payload;
+      })
     },
     [addUser.rejected]: (state, action) => {
       return state;
-    }
-
+    },
+    [editUser.rejected]: (state, action) => {
+      return state;
+    },
   },
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { getUsers, addUser };
+const asyncActions = { getUsers, addUser, editUser };
 export { actions, asyncActions };
 export default slice.reducer;

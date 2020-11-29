@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import FilterUserForm from '../components/FilterUser';
 import AddNewUserButton from '../components/AddNewUserButton';
 import UserList from '../components/UserList';
 import { asyncActions } from '../slices';
@@ -26,7 +27,10 @@ const AuthForm = () => {
     <div className='container'>
       <Alert />
       <h1>Список пользователей</h1>
-      <AddNewUserButton />
+      <div className='adduserbtn row d-flex justify-content-between'>
+        <FilterUserForm />
+        <AddNewUserButton />
+      </div>
       {renderModal(type)}
       <UserList />
     </div>

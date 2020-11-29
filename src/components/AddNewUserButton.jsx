@@ -6,15 +6,13 @@ const CreateUserForm = () => {
   const dispatch = useDispatch();
 
   const clickHandler = () => {
-    dispatch(actions.showModal({type: 'add'}));
+    dispatch(actions.showModal({ type: 'add' }));
   };
 
   return (
-    <div className='adduserbtn row d-flex justify-content-end'>
-      <button onClick={clickHandler} type='submit' className='btn btn-lg btn-primary px-sm-5'>
-        Add newuser
-      </button>
-    </div>
+    <button onClick={clickHandler} type='submit' className='btn btn-lg btn-primary px-sm-5'>
+      Add newuser
+    </button>
   );
 };
 

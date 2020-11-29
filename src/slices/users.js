@@ -10,7 +10,6 @@ const getUsers = createAsyncThunk('users/getUsers', async (rejectWithValue, disp
     const response = await axios.get(url, { headers: { Authorization: token } });
     return response.data;
   } catch (error) {
-    console.log(error.response.data.non_field_errors.join(''));
     const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
     dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
     return rejectWithValue();
@@ -76,13 +75,13 @@ const editUser = createAsyncThunk(
   }
 );
 
-
 const slice = createSlice({
   name: 'users',
   initialState: {
     users: [],
     sortUp: true,
     sortBy: null,
+    filter: '',
   },
   reducers: {
     setSortBy(state, { payload }) {
@@ -93,6 +92,9 @@ const slice = createSlice({
         state.sortUp = !state.sortUp;
       }
     },
+    filterUser(state, { payload }) {
+      state.filter = payload;
+    }
   },
   extraReducers: {
     [getUsers.fulfilled]: (state, { payload }) => {

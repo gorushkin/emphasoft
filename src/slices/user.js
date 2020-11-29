@@ -31,6 +31,10 @@ const slice = createSlice({
     userInit(state, { payload }) {
       state.user = payload;
     },
+    userLogout(state, { payload }) {
+      localStorage.removeItem('token');
+      state.user = { isGuest: true };
+    },
   },
   extraReducers: {
     [userLogin.fulfilled]: (state, { payload }) => {

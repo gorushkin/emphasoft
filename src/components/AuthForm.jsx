@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ username: 'test_super', password: 'Nf<U4f<rDbtDxAPn' });
+  const [form, setForm] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
 
   const signInHandler = (e) => {

@@ -19,7 +19,7 @@ const AddUser = () => {
       last_name: '',
       password: '',
       passwordRepeat: '',
-      is_active: true,
+      is_active: false,
     },
     validateOnChange: false,
     validationSchema: validationSchema,

@@ -4,6 +4,7 @@ import AuthPage from './pages/AuthPage';
 import UsersPage from './pages/UsersPage';
 import { actions } from './slices';
 import { useSelector, useDispatch } from 'react-redux';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const { user } = useSelector((state) => state.user);
@@ -17,6 +18,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+    <Navbar/>
       <div className='container py-3'>
         <Switch>
           <Route path='/' exact component={AuthPage} />

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ username: '', password: 'Nf<' });
   const dispatch = useDispatch();
 
   const signInHandler = (e) => {
@@ -29,7 +29,6 @@ const AuthForm = () => {
           name='username'
         />
         <small id='emailHelp' className='form-text text-muted'>
-          We'll never share your email with anyone else.
         </small>
       </div>
       <div className='form-group'>

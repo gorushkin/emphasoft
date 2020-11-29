@@ -8,4 +8,6 @@ const modals = {
   remove: Remove,
 };
 
-export default (modalName) => modals[modalName];
+const func = (modalName) => modals[modalName];
+
+export default func;

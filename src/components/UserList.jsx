@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from '../slices';
 import { createSelector } from '@reduxjs/toolkit';

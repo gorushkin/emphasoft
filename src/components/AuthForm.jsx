@@ -1,49 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { asyncActions } from '../slices';
 import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+const schema = () =>
+  yup.object({
+    username: yup.string().required('This field is required'),
+    password: yup.string().required('This field is required'),
+  });
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ username: '', password: 'Nf<' });
   const dispatch = useDispatch();
 
-  const signInHandler = (e) => {
-    e.preventDefault();
-    dispatch(asyncActions.userLogin(form))
-  };
-
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validateOnChange: false,
+    validationSchema: schema,
+    onSubmit: (values) => {
+      dispatch(asyncActions.userLogin(values))
+    },
+  });
 
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <div className='form-group'>
         <label htmlFor='exampleInputEmail1'>Login</label>
         <input
           type='text'
           className='form-control'
-          onChange={onChangeHandler}
-          value={form.login}
+          onChange={formik.handleChange}
+          value={formik.values.username}
           name='username'
         />
-        <small id='emailHelp' className='form-text text-muted'>
-        </small>
+        {formik.errors.username ? (
+          <div className='d-block mb-2 invalid-feedback'>{formik.errors.username}</div>
+        ) : null}
       </div>
       <div className='form-group'>
         <label htmlFor='exampleInputPassword1'>Password</label>
         <input
-          onChange={onChangeHandler}
+          onChange={formik.handleChange}
           type='password'
           className='form-control'
           name='password'
-          value={form.password}
+          value={formik.values.password}
         />
+        {formik.errors.password ? (
+          <div className='d-block mb-2 invalid-feedback'>{formik.errors.password}</div>
+        ) : null}
       </div>
-      <button className='btn btn-primary mr-3' onClick={signInHandler}>
-        Sign In
-      </button>
+      <button className='btn btn-primary mr-3'>Sign In</button>
     </form>
   );
 };

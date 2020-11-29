@@ -5,7 +5,7 @@ const schema = () =>
     username: yup
       .string()
       .required('This username is required')
-      .min(1, 'The password is too short')
+      .min(1, 'The username is too short')
       .max(150, 'The username is too long'),
     password: yup
       .string()

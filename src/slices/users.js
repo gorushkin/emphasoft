@@ -3,15 +3,17 @@ import axios from 'axios';
 import routes from '../routes';
 import { actions as errorActions } from './error';
 
-const getUsers = createAsyncThunk('users/getUsers', async () => {
+const getUsers = createAsyncThunk('users/getUsers', async (rejectWithValue, dispatch) => {
   const url = routes.users();
   try {
     const token = `Token ${localStorage.getItem('token')}`;
     const response = await axios.get(url, { headers: { Authorization: token } });
-    const { data } = response;
-    return data;
+    return response.data;
   } catch (error) {
     console.log(error.response.data.non_field_errors.join(''));
+    const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
+    dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
+    return rejectWithValue();
   }
 });
 
@@ -44,10 +46,7 @@ const removeUser = createAsyncThunk(
     const url = routes.user(id);
     try {
       const token = `Token ${localStorage.getItem('token')}`;
-      await axios.delete(
-        url,
-        { headers: { Authorization: token } }
-      );
+      await axios.delete(url, { headers: { Authorization: token } });
       return id;
     } catch (error) {
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
@@ -68,7 +67,7 @@ const editUser = createAsyncThunk(
         { username, first_name, last_name, password },
         { headers: { Authorization: token } }
       );
-      return response.data;;
+      return response.data;
     } catch (error) {
       const errorMsg = Object.values(error.response.data).join('') || error.message || 'Oops!!!';
       dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
@@ -77,31 +76,22 @@ const editUser = createAsyncThunk(
   }
 );
 
-const sortMatch = {
-  username: (a, b) => {
-    if (a.username.toLowerCase() < b.username.toLowerCase()) {
-      return -1;
-    }
-    return 1;
-  },
-  id: (a, b) => {
-    if (a.id < b.id) {
-      return -1;
-    }
-    return 1;
-  },
-};
 
 const slice = createSlice({
   name: 'users',
   initialState: {
     users: [],
-    sortDirections: 'up',
+    sortUp: true,
+    sortBy: null,
   },
   reducers: {
     setSortBy(state, { payload }) {
-      state.sortBy = payload;
-      state.users = state.users.sort(sortMatch[payload]);
+      if (state.sortBy !== payload) {
+        state.sortBy = payload;
+        state.sortUp = true;
+      } else {
+        state.sortUp = !state.sortUp;
+      }
     },
   },
   extraReducers: {

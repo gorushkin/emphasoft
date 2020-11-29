@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from '../slices';
+import { createSelector } from '@reduxjs/toolkit';
 
 const User = (user, actionHandler) => {
   return (
@@ -23,8 +24,32 @@ const User = (user, actionHandler) => {
   );
 };
 
+
+const sortMapping = {
+  username: (x) => x.username.toLowerCase(),
+  id: (x) => x.id,
+};
+
+const sort = (type) => (direction) => (a, b) => {
+  const [x, y] = direction ? [a, b] : [b, a];
+  if (sortMapping[type](x) < sortMapping[type](y)) {
+    return -1;
+  }
+  return 1;
+};
+
+const currentUserList = createSelector(
+  (state) => state.users.users,
+  (state) => state.users.sortUp,
+  (state) => state.users.sortBy,
+  (users, sortUp, sortBy) => {
+    if (!sortBy) return users;
+    return [...users].sort(sort(sortBy)(sortUp));
+  }
+);
+
 const UserList = () => {
-  const { users } = useSelector((state) => state.users);
+  const users = useSelector(currentUserList);
   const dispatch = useDispatch();
 
   const clickHandler = (sortBy) => (e) => {
